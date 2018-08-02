@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.27729.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ThrottledConcurrentLoopSpike", "ThrottledConcurrentLoopSpike\ThrottledConcurrentLoopSpike.csproj", "{8F8DE9B2-4830-45ED-8F82-C7492B14A3EC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ThrottledConcurrentLoop.Test", "ThrottledConcurrentLoop.Test\ThrottledConcurrentLoop.Test.csproj", "{444CFA28-913C-41BC-A407-47D21971A241}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{8F8DE9B2-4830-45ED-8F82-C7492B14A3EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8F8DE9B2-4830-45ED-8F82-C7492B14A3EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8F8DE9B2-4830-45ED-8F82-C7492B14A3EC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{444CFA28-913C-41BC-A407-47D21971A241}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{444CFA28-913C-41BC-A407-47D21971A241}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{444CFA28-913C-41BC-A407-47D21971A241}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{444CFA28-913C-41BC-A407-47D21971A241}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
