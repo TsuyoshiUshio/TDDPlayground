@@ -36,5 +36,32 @@ namespace ThrottledConcurrentLoopSpike
             }
         }
 
+        public static async Task IndexedParallelForEachAsync<T>(this IReadOnlyList<T> items, int maxConcurrency, Func<T, int, Task> action)
+        {
+            using (var semaphore = new SemaphoreSlim(maxConcurrency))
+            {
+                var tasks = new Task[items.Count];
+                for (int i = 0; i < items.Count; i++)
+                {
+                    tasks[i] = InvokeIndexedThrottledAction(i, items[i], action, semaphore);
+                }
+
+                await Task.WhenAll(tasks);
+            }
+        }
+
+        static async Task InvokeIndexedThrottledAction<T>(int index, T item, Func<T, int, Task> action, SemaphoreSlim semaphore)
+        {
+            await semaphore.WaitAsync();
+            try
+            {
+                await action(item, index);
+            }
+            finally
+            {
+                semaphore.Release();
+            }
+        }
+
     }
 }

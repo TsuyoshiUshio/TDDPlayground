@@ -21,40 +21,37 @@ namespace ThrottledConcurrentLoopSpike
 
         public static async  Task ExecuteAsync()
         {
-            List<ValueTuple<int, int>> list = Enumerable.Range(1, 30).Select((element, index) =>
-                { return (index: index, value: element); }
-            ).ToList();
+            List<int> list = Enumerable.Range(1, 30).ToList();
 
-            IReadOnlyList<ValueTuple<int,int>> col = new ReadOnlyCollection<ValueTuple<int,int>>(list);
+            IReadOnlyList<int> col = new ReadOnlyCollection<int>(list);
 
-            var dictionary = new ConcurrentDictionary<int, DateTime>();
+            var dictionary = new ConcurrentDictionary<int, ValueTuple<int,DateTime>>();
 
             // 実行順序は保証できない
-            await col.ParallelForEachAsync(10, async (x) =>
+            await col.IndexedParallelForEachAsync(10, async (x, index) =>
             {
 
-                Console.WriteLine($"{x.Item1}: Accepted.");
+                Console.WriteLine($"{index}: Accepted.");
                 await Task.Delay(TimeSpan.FromSeconds(5));
 
                 // 成果物があれば、ディクショナリに詰める
                 var dateTime = DateTime.Now;
-                dictionary.TryAdd(x.Item1, dateTime);
+                ValueTuple<int, DateTime> artifact = (x, dateTime);
+                dictionary.TryAdd(index, artifact);
 
-                Console.WriteLine($"{x.Item1}: Done by {dateTime}");
+                Console.WriteLine($"{index}: Done by {artifact.Item2}");
                 
             });
 
             Console.WriteLine("---ordered");
 
             // 順番は保証されている。
-            foreach ( var elm  in col)
+            foreach ( var elm  in col.Select((item, index) => new { item, index }))
             {
-                DateTime result = DateTime.Now;
-                dictionary.TryGetValue(elm.Item1, out result);
-                Console.WriteLine($"index : {elm.Item1} time: {result} ");
+                ValueTuple<int, DateTime> result = default(ValueTuple<int, DateTime>);
+                dictionary.TryGetValue(elm.index, out result);
+                Console.WriteLine($"index : {elm.index} x: {elm.item} time: {result.Item2} ");
             }
-
-
         }
     }
 }
